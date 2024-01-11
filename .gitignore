@@ -1,0 +1,5 @@
+/.idea/
+/src/main/java/.openapi-generator-ignore
+/src/main/java/pom.xml
+/src/main/java/README.md
+/src/main/java/ru/mai/archive/generated/

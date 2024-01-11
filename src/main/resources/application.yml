@@ -1,0 +1,26 @@
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 300MB
+      max-request-size: 300MB
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/archive}
+    username: ${DB_USER:local}
+    password: ${DB_PWD:local}
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
+
+minio:
+  url: ${MINIO_URL:http://localhost:9000}
+  user: ${MINIO_USER:minio}
+  password: ${MINIO_PWD:minio123}
+  bucket: archive
