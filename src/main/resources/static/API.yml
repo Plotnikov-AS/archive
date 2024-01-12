@@ -320,6 +320,9 @@ components:
         description:
           type: string
           description: Описание (содержание)
+        size:
+          type: integer
+          description: Размер файла
     StreamingResponseBody:
       type: object
     DocumentFilter:

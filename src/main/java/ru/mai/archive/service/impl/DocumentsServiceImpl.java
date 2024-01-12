@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,9 +18,11 @@ import ru.mai.archive.generated.dto.DocumentDto;
 import ru.mai.archive.generated.dto.DocumentFilter;
 import ru.mai.archive.generated.dto.PagedDocs;
 import ru.mai.archive.repo.DocumentsRepo;
+import ru.mai.archive.repo.spec.DocFilterSpec;
 import ru.mai.archive.service.DocumentsService;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -67,7 +70,23 @@ public class DocumentsServiceImpl implements DocumentsService {
 
     @Override
     public PagedDocs getByFilter(DocumentFilter filter, Pageable pageable) {
-        return null;
+        Page<Document> page = repo.findAll(new DocFilterSpec(filter), pageable);
+        List<DocumentDto> content = page.stream()
+                .map(doc -> mapper.map(doc, DocumentDto.class))
+                .toList();
+
+        return new PagedDocs()
+                .content(content)
+                .pageable(page.getPageable())
+                .totalElements(page.getTotalElements())
+                .last(page.isLast())
+                .totalPages(page.getTotalPages())
+                .number(page.getNumber())
+                .size(page.getSize())
+                .sort(page.getSort())
+                .numberOfElements(page.getNumberOfElements())
+                .first(page.isFirst())
+                .empty(page.isEmpty());
     }
 
     @Override
@@ -83,7 +102,8 @@ public class DocumentsServiceImpl implements DocumentsService {
             throw new RuntimeException(e.getMessage(), e);
         }
         doc.setFilename(FilenameUtils.getBaseName(file.getOriginalFilename()))
-                .setExt(FilenameUtils.getExtension(file.getOriginalFilename()));
+                .setExt(FilenameUtils.getExtension(file.getOriginalFilename()))
+                .setSize(file.getSize());
         repo.save(doc);
 
         return mapper.map(doc, DocumentDto.class);

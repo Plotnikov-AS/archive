@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.Generated;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -39,4 +38,7 @@ public class Document {
 
     @Column(name = "filename")
     private String filename;
+
+    @Column(name = "size")
+    private Long size;
 }
