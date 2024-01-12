@@ -7,6 +7,7 @@ create table if not exists documents
     reg_date    date,
     description text,
     ext         varchar,
-    filename    text
+    filename    text,
+    size        bigint
 );
 
