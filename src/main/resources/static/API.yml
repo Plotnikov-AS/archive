@@ -323,6 +323,9 @@ components:
         size:
           type: integer
           description: Размер файла
+        ext:
+          type: string
+          description: Расширение файла
     StreamingResponseBody:
       type: object
     DocumentFilter:
