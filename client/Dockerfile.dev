@@ -1,0 +1,19 @@
+FROM node:16.18-alpine3.15 as build
+
+WORKDIR /app
+
+COPY package.json ./
+COPY package-lock.json ./
+
+RUN apk add --no-cache git openssh
+RUN yarn install
+
+COPY . .
+
+ARG VITE_PORT
+ARG VITE_MODE
+ARG VITE_API_URL
+
+EXPOSE 8000
+
+CMD ["npm", "dev"]
